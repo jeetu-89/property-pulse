@@ -9,7 +9,7 @@ type PropertyPageProps = {
 
 const PropertyPage = async({ params, searchParams }: PropertyPageProps) => {
     const resolvedSearchParams = await searchParams;
-  return <div>Property Page {resolvedSearchParams.name}</div>;
+  return <div>Property Page {params.id}</div>;
 };
 
 export default PropertyPage;
