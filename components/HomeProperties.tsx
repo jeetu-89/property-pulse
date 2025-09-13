@@ -16,18 +16,19 @@ const HomeProperties = () => {
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {recentProperties.map((property) => (
-                <div>
-                  <PropertyCard key={property._id} property={property} />
-                </div>
+                <PropertyCard key={property._id} property={property} />
               ))}
             </div>
           )}
         </div>
       </section>
       <section className="max-w-lg mx-auto my-6">
-          <Link href={"/properties"} className="text-white bg-black block text-center py-4 rounded-xl hover:bg-gray-700">
+        <Link
+          href={"/properties"}
+          className="text-white bg-black block text-center py-4 rounded-xl hover:bg-gray-700"
+        >
           View All Properties
-          </Link>
+        </Link>
       </section>
     </>
   );
