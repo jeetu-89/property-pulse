@@ -4,6 +4,7 @@ import { PropertyType } from "@/models/Property";
 import PropertyHeaderImage from "@/components/PropertyHeaderImage";
 import Link from "next/link";
 import { FaArrowLeft } from "react-icons/fa";
+import PropertyDetails from "@/components/PropertyDetails";
 
 type PropertyPageProps = {
   params: {
@@ -14,9 +15,12 @@ const PropertyPage = async ({ params }: PropertyPageProps) => {
   await connectDB();
   const {id} = await params;
   const property = await Property.findById(id).lean<PropertyType>();
+  if(!property){
+    return <div>Property Not Found</div>
+  }
   return (
     <>
-      <PropertyHeaderImage image = {property?.images[0]} />
+      <PropertyHeaderImage image = {property.images[0]} />
       <section>
       <div className="container m-auto py-6 px-6">
         <Link
@@ -32,6 +36,7 @@ const PropertyPage = async ({ params }: PropertyPageProps) => {
       <div className="container m-auto py-10 px-6">
         <div className="grid grid-cols-1 md:grid-cols-70/30 w-full gap-6">
         {/* Property Info */}
+        <PropertyDetails property={property}/>
         </div>
       </div>
     </section>
