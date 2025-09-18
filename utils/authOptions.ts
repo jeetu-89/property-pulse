@@ -10,7 +10,6 @@ if (!clientId || !clientSecret) {
     "Add GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET at .env file."
   );
 }
-import { Session } from "next-auth";
 
 // Extend the Session type to include 'id' on user
 declare module "next-auth" {
