@@ -3,7 +3,8 @@ import "@/assets/styles/globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import AuthProvider from "@/components/AuthProvider";
-
+import { getServerSession } from "next-auth";
+import authOptions from "@/utils/authOptions";
 interface MainLayoutProps {
   children: ReactNode;
 }
@@ -13,9 +14,10 @@ export const metadata = {
   keywords: "Rental, Property, RealEstate",
   descirption: "Find Perfect Rental Property.",
 };
-const MainLayout = ({ children }: MainLayoutProps) => {
+const MainLayout = async ({ children }: MainLayoutProps) => {
+  const session = await getServerSession(authOptions);
   return (
-    <AuthProvider>
+    <AuthProvider session={session}>
       <html>
         <body>
           <Navbar />

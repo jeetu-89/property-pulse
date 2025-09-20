@@ -1,17 +1,10 @@
-import GoogleProvider from "next-auth/providers/google";
-import type { AuthOptions } from "next-auth";
+
 import connectDB from "@/config/db";
-import User, { UserType } from "@/models/User";
+import User from "@/models/User";
+import type { AuthOptions } from "next-auth";
+import type { GoogleProfile } from "next-auth/providers/google";
+import GoogleProvider from "next-auth/providers/google";
 
-const clientId = process.env.GOOGLE_CLIENT_ID;
-const clientSecret = process.env.GOOGLE_CLIENT_SECRET;
-if (!clientId || !clientSecret) {
-  throw new Error(
-    "Add GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET at .env file."
-  );
-}
-
-// Extend the Session type to include 'id' on user
 declare module "next-auth" {
   interface Session {
     user?: {
@@ -23,41 +16,53 @@ declare module "next-auth" {
   }
 }
 
-export const authOptions: AuthOptions = {
+const googleClientId = process.env.GOOGLE_CLIENT_ID;
+const googleClientSecret = process.env.GOOGLE_CLIENT_SECRET;
+if (!googleClientId || !googleClientSecret) {
+  throw new Error("Google credentials are not found at .env.");
+}
+
+connectDB();
+const authOptions: AuthOptions = {
   providers: [
     GoogleProvider({
-      clientId,
-      clientSecret,
+      clientId: googleClientId,
+      clientSecret: googleClientSecret,
       authorization: {
         params: {
           prompt: "consent",
-          access_type: "offline",
           response_type: "code",
+          access_type: "offline",
         },
+      },
+      profile(profile: GoogleProfile) {
+        return {
+          id: profile.sub,
+          name: profile.name,
+          email: profile.email,
+          image: profile.picture,
+        };
       },
     }),
   ],
   callbacks: {
-    async signIn({ profile }) {
-      await connectDB();
-      const existingUser = await User.findOne({ email: profile?.email });
+    async signIn({ user }) {
+      const existingUser = await User.findOne({ email: user.email });
       if (!existingUser) {
-        // Truncate Username if toolong
-        const username = await profile?.name?.slice(0, 20);
         await User.create({
-          email: profile?.email,
-          username: profile?.name,
-          image: profile?.image,
+          email: user.email,
+          username: user.name,
+          image: user.image,
         });
       }
       return true;
     },
     async session({ session }) {
-      const user = await User.findOne<UserType>({ email: session.user?.email });
-      if (session.user && user?._id) {
-        session.user.id = user._id.toString();
-      }
+      const currentUser = await User.findOne({ email: session.user?.email });
+      if (session.user) session.user.id = currentUser._id.toString();
       return session;
     },
   },
 };
+
+export default authOptions;

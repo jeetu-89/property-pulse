@@ -1,38 +1,44 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import logo from "@/assets/images/logo-white.png";
 import Image from "next/image";
 import profileDefault from "@/assets/images/profile.png";
 import Link from "next/link";
-import { signIn, signOut, useSession, getProviders } from "next-auth/react";
+import {
+  ClientSafeProvider,
+  getProviders,
+  LiteralUnion,
+  signIn,
+  signOut,
+  useSession,
+} from "next-auth/react";
 
-import { FaGoogle } from "react-icons/fa";
-import type { ClientSafeProvider, LiteralUnion } from "next-auth/react";
-import type { BuiltInProviderType } from "next-auth/providers/index";
+import { FaFacebook, FaGithub, FaGoogle } from "react-icons/fa";
+import { BuiltInProviderType } from "next-auth/providers/index";
+
 const Navbar = () => {
-  const { data: session } = useSession();
-  
-  const profileImage = session?.user?.image;
 
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
-  // const [isLoggedIn, setIsLoggedIn] = useState(true);
+  // const [session, setSesssession] = useState(true);
+  const pathName = usePathname();
+  const { data: session } = useSession();
   const [providers, setProviders] = useState<Record<
     LiteralUnion<BuiltInProviderType, string>,
     ClientSafeProvider
-  > | null>(null);
-  const pathName = usePathname();
+  > | null>();
+  const [hoverProvider, setHoverProvider] = useState(false);
 
+  const profileImage = session?.user?.image;
   useEffect(() => {
-    const setAuthProviders = async () => {
+    const getAuthProviders = async () => {
       const res = await getProviders();
       setProviders(res);
     };
-    setAuthProviders();
+    getAuthProviders();
   }, []);
-
   return (
     <>
       <nav className="bg-blue-700 border-b border-blue-500">
@@ -111,19 +117,28 @@ const Navbar = () => {
 
             {/* <!-- Right Side Menu (Logged Out) --> */}
             {!session && (
-              <div className="hidden md:block md:ml-6">
-                <div className="flex items-center">
+              <div className="flex items-center text-white">
+                <div
+                  className={`flex items-center bg-gray-700  px-3 gap-1 py-2 rounded-md rounded-m ${
+                    hoverProvider && "bg-gray-900"
+                  }`}
+                >
                   {providers &&
                     Object.values(providers).map((provider) => (
                       <button
                         key={provider.id}
-                        onClick={()=> signIn(provider.id)}
-                        className="flex items-center text-white bg-gray-700 hover:bg-gray-900 hover:text-white rounded-md px-3 py-2"
+                        onMouseEnter={() => setHoverProvider(true)}
+                        onMouseLeave={() => setHoverProvider(false)}
+                        className="flex items-center text-white  hover:bg-gray-900 hover:text-white rounded-md px-2 py-2 hover:border border-gray-500"
+                        onClick={() => signIn(provider.id)}
                       >
-                        <FaGoogle className="mr-2" />
-                        <span>Login or Register</span>
+                        {provider.name === "Google" && <FaGoogle />}
+                        {provider.name === "Github" && <FaGithub />}
+                        {provider.name === "Facebook" && <FaFacebook />}
                       </button>
                     ))}
+
+                  <span>Login or Register</span>
                 </div>
               </div>
             )}
@@ -174,9 +189,9 @@ const Navbar = () => {
                       <Image
                         className="h-8 w-8 rounded-full"
                         src={profileImage || profileDefault}
+                        alt=""
                         width={40}
                         height={40}
-                        alt=""
                       />
                     </button>
                   </div>
@@ -214,7 +229,7 @@ const Navbar = () => {
                         role="menuitem"
                         tabIndex={-1}
                         id="user-menu-item-2"
-                        onClick={()=>{
+                        onClick={() => {
                           setIsProfileMenuOpen(false);
                           signOut();
                         }}
@@ -260,10 +275,30 @@ const Navbar = () => {
                 </Link>
               )}
               {!session && (
-                <button className="flex items-center text-white bg-gray-700 hover:bg-gray-900 hover:text-white rounded-md px-3 py-2 my-5">
-                  <FaGoogle className="text-white mr-2" size={20} />
-                  <span>Login or Register</span>
-                </button>
+                <div className="flex items-center text-white">
+                  <div
+                    className={`flex items-center bg-gray-700  px-3 gap-1 py-2 rounded-md rounded-m ${
+                      hoverProvider && "bg-gray-900"
+                    }`}
+                  >
+                    {providers &&
+                      Object.values(providers).map((provider) => (
+                        <button
+                          key={provider.id}
+                          onMouseEnter={() => setHoverProvider(true)}
+                          onMouseLeave={() => setHoverProvider(false)}
+                          className="flex items-center text-white  hover:bg-gray-900 hover:text-white rounded-md px-2 py-2 hover:border border-gray-500"
+                          onClick={() => signIn(provider.id)}
+                        >
+                          {provider.name === "Google" && <FaGoogle />}
+                          {provider.name === "Github" && <FaGithub />}
+                          {provider.name === "Facebook" && <FaFacebook />}
+                        </button>
+                      ))}
+
+                    <span>Login or Register</span>
+                  </div>
+                </div>
               )}
             </div>
           </div>
