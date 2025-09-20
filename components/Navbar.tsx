@@ -127,7 +127,7 @@ const Navbar = () => {
                         key={provider.id}
                         onMouseEnter={() => setHoverProvider(true)}
                         onMouseLeave={() => setHoverProvider(false)}
-                        className="flex items-center text-white  hover:bg-gray-900 hover:text-white rounded-md px-2 py-2 hover:ring ring-gray-700 ring-inset"
+                        className="flex items-center text-white  hover:bg-gray-900 hover:text-white rounded-md px-2 py-2 hover:border border-gray-500"
                         onClick={() => signIn(provider.id)}
                       >
                         {provider.name === "Google" && <FaGoogle />}
@@ -280,7 +280,7 @@ const Navbar = () => {
                           key={provider.id}
                           onMouseEnter={() => setHoverProvider(true)}
                           onMouseLeave={() => setHoverProvider(false)}
-                          className="flex items-center text-white  hover:bg-gray-900 hover:text-white rounded-md px-2 py-2 hover:ring ring-gray-700 ring-inset"
+                          className="flex items-center text-white  hover:bg-gray-900 hover:text-white rounded-md px-2 py-2 hover:border border-gray-500"
                           onClick={() => signIn(provider.id)}
                         >
                           {provider.name === "Google" && <FaGoogle />}
