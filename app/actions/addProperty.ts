@@ -1,6 +1,12 @@
 "use server";
 
+import connectDB from "@/config/db";
+import getSessionUser from "@/utils/getSessionUser";
+
 async function addProperty(formData: FormData) {
+    await connectDB();
+
+    const sessionUser = await getSessionUser(); 
   const amenities = formData.getAll("amenities");
   const images = formData
     .getAll("images")
