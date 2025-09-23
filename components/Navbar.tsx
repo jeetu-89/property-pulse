@@ -19,7 +19,6 @@ import { FaFacebook, FaGithub, FaGoogle } from "react-icons/fa";
 import { BuiltInProviderType } from "next-auth/providers/index";
 
 const Navbar = () => {
-
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
   // const [session, setSesssession] = useState(true);
@@ -212,6 +211,7 @@ const Navbar = () => {
                         role="menuitem"
                         tabIndex={-1}
                         id="user-menu-item-0"
+                        onClick={() => setIsProfileMenuOpen(false)}
                       >
                         Your Profile
                       </Link>
@@ -221,6 +221,7 @@ const Navbar = () => {
                         role="menuitem"
                         tabIndex={-1}
                         id="user-menu-item-2"
+                        onClick={() => setIsProfileMenuOpen(false)}
                       >
                         Saved Properties
                       </Link>

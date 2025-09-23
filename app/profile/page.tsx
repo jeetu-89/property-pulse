@@ -4,6 +4,7 @@ import Image from "next/image";
 import profileDefault from "@/assets/images/profile.png";
 import Property, { PropertyType } from "@/models/Property";
 import ProfileProperties from "@/components/ProfileProperties";
+import { convertToSerializableObject } from "@/utils/convertToObjext";
 
 const ProfilePage = async () => {
   await connectDB();
@@ -14,10 +15,10 @@ const ProfilePage = async () => {
     throw new Error("User Id is required.");
   }
 
-  const properties = await Property.find({ owner: userId }).lean<
+  const propertiesDocs = await Property.find({ owner: userId }).lean<
     PropertyType[]
   >();
-
+  const properties = propertiesDocs.map(convertToSerializableObject);
   return (
     <section className="bg-blue-50">
       <div className="container m-auto py-24">
