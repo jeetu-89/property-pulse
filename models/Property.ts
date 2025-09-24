@@ -1,5 +1,6 @@
 import {
   HydratedDocument,
+  HydratedDocumentFromSchema,
   InferSchemaType,
   Schema,
   Types,
@@ -73,7 +74,12 @@ const propertySchema = new Schema(
   }
 );
 
-export type PropertyType = InferSchemaType<typeof propertySchema> & { _id: Types.ObjectId}
+export type PropertyType = InferSchemaType<typeof propertySchema> & {
+  _id: Types.ObjectId;
+};
+export type PropertyTypeHydrated = HydratedDocumentFromSchema<
+  typeof propertySchema
+>;
 
 const Property = models.Property || model("Property", propertySchema);
 export default Property;
