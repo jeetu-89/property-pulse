@@ -1,8 +1,9 @@
 import { PropertyType } from "@/models/Property";
+import { SerializableObjectType } from "@/utils/convertToObjext";
 import { FaBath, FaBed, FaCheck, FaMapMarker, FaRulerCombined, FaTimes } from "react-icons/fa";
 
 type PropertyDetailsProps = {
-  property: PropertyType ;
+  property: SerializableObjectType<PropertyType> ;
 };
 
 const PropertyDetails = ({ property }: PropertyDetailsProps) => {
