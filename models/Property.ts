@@ -79,7 +79,9 @@ export type PropertyType = InferSchemaType<typeof propertySchema> & {
 };
 export type PropertyTypeHydrated = HydratedDocumentFromSchema<
   typeof propertySchema
->;
+> & {
+  _id: Types.ObjectId;
+};
 
 const Property = models.Property || model("Property", propertySchema);
 export default Property;
