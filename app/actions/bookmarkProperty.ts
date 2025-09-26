@@ -22,17 +22,17 @@ const bookmarkProperty = async (propertyId: string) => {
 
   let message;
   const propertyObjectId = new Types.ObjectId(propertyId);
-  let isBookmarked = user.booksmarks.some((bookmark: Types.ObjectId) =>
+  let isBookmarked = user.bookmarks.some((bookmark: Types.ObjectId) =>
     bookmark.equals(propertyObjectId)
   );
   if (isBookmarked) {
-    user.booksmarks = user.booksmarks.filter(
+    user.bookmarks = user.bookmarks.filter(
       (bookmark) => !bookmark.equals(propertyObjectId)
     );
     isBookmarked = false;
     message = "Bookmark Removed";
   } else {
-    user.booksmarks.push(propertyObjectId);
+    user.bookmarks.push(propertyObjectId);
     isBookmarked = true;
     message = "Bookmark Added";
   }

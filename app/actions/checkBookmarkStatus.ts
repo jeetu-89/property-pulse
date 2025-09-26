@@ -17,7 +17,7 @@ const checkBookmarkStatus = async (propertyId: string) => {
   if (!user) {
     throw new Error("Property not found.");
   }
-  const isBookmarked = user.booksmarks.some((bookmark) =>
+  const isBookmarked = user.bookmarks.some((bookmark) =>
     bookmark.equals(propertyObjectId)
   );
   return { isBookmarked };

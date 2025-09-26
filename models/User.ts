@@ -21,7 +21,7 @@ const userSchema = new Schema(
     image: {
       type: String,
     },
-    booksmarks: [
+    bookmarks: [
       {
         type: Schema.Types.ObjectId,
         ref: "Property",
@@ -33,7 +33,7 @@ const userSchema = new Schema(
   }
 );
 
-export type UserType = InferSchemaType<typeof User> & {
+export type UserType = InferSchemaType<typeof userSchema> & {
   _id: Types.ObjectId;
 };
 
