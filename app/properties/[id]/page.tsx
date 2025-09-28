@@ -20,7 +20,7 @@ type PropertyPageProps = {
 const PropertyPage = async ({ params }: PropertyPageProps) => {
   await connectDB();
   const {id} = await params;
-  const propertyDoc = await Property.findById(new ObjectId(id)).lean<PropertyType>();
+  const propertyDoc = await Property.findById(id).lean<PropertyType>();
   const property = convertToSerializableObject(propertyDoc);
   if(!property){
     return <h1 className="text-2xl text-center font-bold mt-10">Property Not Found</h1>
