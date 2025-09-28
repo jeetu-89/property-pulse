@@ -1,6 +1,7 @@
 import { PropertyType } from "@/models/Property";
 import { SerializableObjectType } from "@/utils/convertToObjext";
 import { FaBath, FaBed, FaCheck, FaMapMarker, FaRulerCombined, FaTimes } from "react-icons/fa";
+import PropertyMap from "./PropertyMap";
 
 type PropertyDetailsProps = {
   property: SerializableObjectType<PropertyType> ;
@@ -89,7 +90,9 @@ const PropertyDetails = ({ property }: PropertyDetailsProps) => {
       </div>
       {/* <!-- Map --> */}
       <div className="bg-white p-6 rounded-lg shadow-md mt-6">
-        <div id="map"></div>
+        <div id="map">
+          <PropertyMap property={property}/>
+        </div>
       </div>
     </main>
   );
